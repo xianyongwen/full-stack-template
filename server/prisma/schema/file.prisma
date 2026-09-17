@@ -1,0 +1,11 @@
+/// 文件元数据表，对外只暴露 id，不再直接暴露 OSS 链接
+model File {
+  id             String   @id
+  bucket         String   @default("")
+  minioKey       String   @map("minio_key")
+  mimeType       String   @default("application/octet-stream") @map("mime_type")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([bucket])
+  @@map("files")
+}

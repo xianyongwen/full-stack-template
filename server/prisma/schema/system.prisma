@@ -1,0 +1,159 @@
+/// 部门表（用于数据权限）
+model SysDept {
+  id         String   @id @default(uuid()) @db.Uuid
+  parentId   String   @default(dbgenerated("'00000000-0000-0000-0000-000000000000'::uuid")) @db.Uuid
+  deptName   String   @map("dept_name") @db.VarChar(50)
+  sort       Int      @default(0)
+  status     Int      @default(1) @db.SmallInt
+  deleted    Int      @default(0) @db.SmallInt
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @default(now()) @updatedAt @map("update_time")
+
+  /// 父部门
+  parent   SysDept?  @relation("DeptParentChildren", fields: [parentId], references: [id])
+  children SysDept[] @relation("DeptParentChildren")
+
+  /// 部门下的用户
+  users SysUser[]
+
+  @@map("sys_dept")
+}
+
+/// 用户表
+model SysUser {
+  id         String   @id @default(uuid()) @db.Uuid
+  username   String   @unique @db.VarChar(50)
+  password   String   @db.VarChar(200)
+  nickname   String?  @db.VarChar(50)
+  email      String?  @db.VarChar(100)
+  phone      String?  @db.VarChar(20)
+  deptId     String?  @map("dept_id") @db.Uuid
+  status     Int      @default(1) @db.SmallInt
+  deleted    Int      @default(0) @db.SmallInt
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @default(now()) @updatedAt @map("update_time")
+
+  /// 所属部门
+  dept  SysDept?      @relation(fields: [deptId], references: [id])
+  roles SysUserRole[]
+
+  @@index([deptId])
+  @@map("sys_user")
+}
+
+/// 角色表
+model SysRole {
+  id         String   @id @default(uuid()) @db.Uuid
+  roleName   String   @map("role_name") @db.VarChar(50)
+  roleCode   String   @unique @map("role_code") @db.VarChar(50)
+  /// 数据权限范围：1-全部，2-自定义，3-本部门，4-本部门及以下，5-仅本人
+  dataScope  Int      @default(1) @map("data_scope") @db.SmallInt
+  sort       Int      @default(0)
+  status     Int      @default(1) @db.SmallInt
+  deleted    Int      @default(0) @db.SmallInt
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @default(now()) @updatedAt @map("update_time")
+
+  users       SysUserRole[]
+  permissions SysRolePermission[]
+
+  @@map("sys_role")
+}
+
+/// 权限 / 菜单表
+model SysPermission {
+  id         String   @id @default(uuid()) @db.Uuid
+  parentId   String   @default(dbgenerated("'00000000-0000-0000-0000-000000000000'::uuid")) @db.Uuid
+  permName   String   @map("perm_name") @db.VarChar(50)
+  /// 权限标识（如 user:add, user:list）
+  permCode   String?  @map("perm_code") @db.VarChar(100)
+  /// 类型：1-目录，2-菜单，3-按钮(操作)，4-API接口
+  type       Int      @db.SmallInt
+  code       String?  @db.VarChar(200)
+  component  String?  @db.VarChar(255)
+  icon       String?  @db.Text
+  apiUrl     String?  @map("api_url") @db.VarChar(255)
+  apiMethod  String?  @map("api_method") @db.VarChar(10)
+  sort       Int      @default(0)
+  /// 是否可见：1-是，0-否（隐藏菜单）
+  visible    Int      @default(1) @db.SmallInt
+  status     Int      @default(1) @db.SmallInt
+  deleted    Int      @default(0) @db.SmallInt
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @default(now()) @updatedAt @map("update_time")
+
+  /// 父级权限
+  parent   SysPermission?  @relation("PermParentChildren", fields: [parentId], references: [id])
+  children SysPermission[] @relation("PermParentChildren")
+
+  /// 关联的角色
+  roles SysRolePermission[]
+
+  @@map("sys_permission")
+}
+
+/// 用户-角色关联表
+model SysUserRole {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  roleId String @map("role_id") @db.Uuid
+
+  user SysUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role SysRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId], name: "uk_user_role")
+  @@index([roleId])
+  @@map("sys_user_role")
+}
+
+/// 角色-权限关联表
+model SysRolePermission {
+  id           String @id @default(uuid()) @db.Uuid
+  roleId       String @map("role_id") @db.Uuid
+  permissionId String @map("permission_id") @db.Uuid
+
+  role       SysRole       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission SysPermission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId], name: "uk_role_perm")
+  @@index([permissionId])
+  @@map("sys_role_permission")
+}
+
+/// 字典类型表
+model SysDictType {
+  id         String   @id @default(uuid()) @db.Uuid
+  dictName   String   @map("dict_name") @db.VarChar(100)
+  /// 字典类型编码（唯一，如 sys_user_sex）
+  dictType   String   @unique @map("dict_type") @db.VarChar(100)
+  status     Int      @default(1) @db.SmallInt
+  remark     String?  @db.VarChar(255)
+  sort       Int      @default(0)
+  deleted    Int      @default(0) @db.SmallInt
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @default(now()) @updatedAt @map("update_time")
+
+  @@map("sys_dict_type")
+}
+
+/// 字典数据表
+model SysDictData {
+  id         String   @id @default(uuid()) @db.Uuid
+  /// 所属字典类型编码（与 SysDictType.dictType 关联）
+  dictType   String   @map("dict_type") @db.VarChar(100)
+  dictLabel  String   @map("dict_label") @db.VarChar(100)
+  dictValue  String   @map("dict_value") @db.VarChar(100)
+  /// 前端样式（如 Tag 颜色：blue/green/red/orange）
+  cssClass   String?  @map("css_class") @db.VarChar(50)
+  /// 是否默认：1-是，0-否
+  isDefault  Int      @default(0) @map("is_default") @db.SmallInt
+  sort       Int      @default(0)
+  status     Int      @default(1) @db.SmallInt
+  remark     String?  @db.VarChar(255)
+  deleted    Int      @default(0) @db.SmallInt
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @default(now()) @updatedAt @map("update_time")
+
+  @@index([dictType])
+  @@map("sys_dict_data")
+}

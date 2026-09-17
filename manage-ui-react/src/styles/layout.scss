@@ -1,0 +1,207 @@
+/* ── 页面布局通用 class（归入 components 层，可被 utilities 覆盖） ── */
+@layer components {
+  .admin-layout {
+    // background:linear-gradient(135deg, #E8EEFB 0%, #F0E6F6 50%, #E6F0FA 100%);
+    position: relative;
+  }
+
+  .admin-layout {
+    background: radial-gradient(
+        circle at 15% 20%,
+        rgba(111,175,255,.28),
+        transparent 35%
+      ),
+
+      radial-gradient(
+        circle at 82% 18%,
+        rgba(255,220,160,.18),
+        transparent 30%
+      ),
+
+      radial-gradient(
+        circle at 82% 82%,
+        rgba(240,190,230,.16),
+        transparent 35%
+      ),
+
+      radial-gradient(
+        circle at 30% 85%,
+        rgba(150,220,255,.2),
+        transparent 30%
+      ),
+
+      radial-gradient(
+        circle at 60% 60%,
+        rgba(205,190,255,.14),
+        transparent 40%
+      ),
+
+      linear-gradient(
+        135deg,
+        #f8fbff 0%,
+        #f7f9ff 30%,
+        #fffafc 60%,
+        #faf7ff 100%
+      );
+
+    animation: bgMove 20s ease-in-out infinite alternate;
+  }
+
+  /* 柔和发光 */
+  .admin-layout::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    backdrop-filter:blur(60px);
+    pointer-events:none;
+  }
+
+  // /* 波浪线 */
+  .admin-layout::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.35;
+    pointer-events:none;
+    background-image: repeating-radial-gradient(
+      circle at 20% 20%,
+      transparent 0px,
+      transparent 18px,
+      rgba(255, 255, 255, 0.45) 19px,
+      transparent 20px
+    );
+    mix-blend-mode: soft-light;
+  }
+
+  @keyframes bgMove {
+    0% {
+      background-position:
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        center;
+    }
+    100% {
+      background-position:
+        -40px -20px,
+        40px -30px,
+        -30px 40px,
+        50px 20px,
+        -20px 30px,
+        center;
+    }
+  }
+
+  .layout-menu {
+    .ant-menu-item-selected {
+      background: linear-gradient(90deg, rgb(95, 85, 246) 0%, rgb(108, 90, 248) 45%, rgb(134, 108, 255) 100%);
+      color: #fff;
+    }
+  }
+
+  .page-col-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    overflow: hidden;
+    padding: var(--spacing-md);
+  }
+
+  /* 搜索栏容器 */
+  .page-search-container {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--container-bg);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-md);
+    flex: 0;
+  }
+
+  .search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+  }
+
+  /* 表格区容器（操作栏 + 表格 + 分页） */
+  .page-table-container {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--container-bg);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-md);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  /* 表格上方操作栏 */
+  .page-table-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .auto-height-table {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    /* ── 固定表头表格（设置了 scroll.y）：表体撑满容器剩余高度，表头固定、表体滚动、分页沉底 ──
+       用 :has 限定，未设 scroll.y 的表格不受影响。
+       flex 逐层传递高度：
+       .ant-table-wrapper > .ant-spin > .ant-spin-container
+         > (.ant-table[flex:1] + .ant-pagination[自然高度])
+         > .ant-table-container > (.ant-table-header + .ant-table-body[flex:1]) */
+    &:has(.ant-table-fixed-header) {
+      min-height: 0;
+
+      .ant-table-wrapper,
+      .ant-spin,
+      .ant-spin-container,
+      .ant-table,
+      .ant-table-container {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* 表体占满剩余高度并滚动；覆盖 rc-table 内联的 max-height: scroll.y，改由 flex 决定高度 */
+      .ant-table-body {
+        flex: 1;
+        min-height: 0;
+        max-height: none !important;
+        scrollbar-color: transparent transparent;
+        &:hover {
+          scrollbar-color: var(--theme-scrollbar-thumb) transparent;
+        }
+      }
+    }
+  }
+
+  /* ── flex 列布局的 Tabs：tab 栏固定、内容区占满剩余高度并溢出滚动 ──
+     用于 page-table-container 内的多层卡片等内容，避免被 Container 的 overflow: hidden 裁掉 */
+  .flex-tabs {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+
+    .ant-tabs-nav {
+      flex: 0 0 auto;
+    }
+
+    .ant-tabs-content-holder {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      scrollbar-color: transparent transparent;
+      &:hover {
+        scrollbar-color: var(--theme-scrollbar-thumb) transparent;
+      }
+    }
+  }
+}
+

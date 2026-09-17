@@ -1,0 +1,71 @@
+/* 紫色渐变按钮 */
+@layer utilities {
+  .pretty-btn{
+      position:relative;
+      padding:0px 18px;
+      border:none;
+      border-radius:14px;
+      cursor:pointer;
+      color:#fff !important;
+      font-size:14px;
+      font-weight:500;
+  
+      background:
+      linear-gradient(
+          135deg,
+          #B08CFF 0%,
+          #8B5CF6 45%,
+          #6D5BFF 100%
+      );
+  
+      box-shadow:
+      0 8px 24px rgba(139,92,246,.35);
+  
+      transition:all .3s ease;
+      overflow:hidden;
+  }
+  
+  /* 高光 */
+  .pretty-btn::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:60%;
+      height:100%;
+      pointer-events: none;
+  
+      background:
+      linear-gradient(
+          90deg,
+          transparent,
+          rgba(255,255,255,.35),
+          transparent
+      );
+  
+      transition:.6s;
+  }
+  
+  .pretty-btn:hover::before{
+      left:120%;
+  }
+  
+  .pretty-btn:hover{
+      transform:translateY(-2px);
+  
+      background:
+      linear-gradient(
+          135deg,
+          #BC9BFF 0%,
+          #9668FF 45%,
+          #7B6BFF 100%
+      );
+  
+      box-shadow:
+      0 12px 32px rgba(139,92,246,.45);
+  }
+  
+  .pretty-btn:active{
+      transform:translateY(0);
+  }
+}

@@ -1,0 +1,68 @@
+.summaryCard {
+  background: linear-gradient(
+                135deg,
+                rgba(99,102,241,.08),
+                rgba(139,92,246,.05)
+                );
+  border: 1px solid rgba(99,102,241,.25);
+  color: #64748b;
+}
+
+.infoCard {
+  border: 1px solid rgba(237, 137, 54, 0.2);
+  background: rgba(237, 137, 54, 0.05);
+  color: #64748b;
+}
+
+.blueCard {
+  background: rgba(66, 153, 225, 0.05);
+  border: 1px solid rgba(66, 153, 225, 0.2);
+  color: #64748b;
+}
+
+.yellowCard {
+  background: rgba(255, 255, 240, 0.55);
+  border: 1px solid rgba(255, 255, 240, 0.8);
+  color: #64748b;
+}
+
+.whiteCard {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+}
+
+/* 紫色渐变 */
+.purpleGradientCard {
+  background: linear-gradient(180deg, #f5f3ff 0%, #ffffff 100%);
+  border: 1px solid #ddd6fe;
+  color: #64748b;
+}
+
+.purpleCard {
+  background: rgba(221, 214, 254, 0.2);
+  border: 1px solid #ddd6fe;
+  color: #64748b;
+}
+
+.riskCard {
+  background:rgba(254,242,242,.8);
+  border: 1px solid rgb(250, 211, 211);
+  color: #64748b;
+}
+
+.riskGradientCard {
+  background: linear-gradient(180deg, #fff1f2 0%, #ffffff 100%);
+  border: 1px solid #fecdd3;
+}
+
+.planCard {
+  background:
+    linear-gradient(
+    135deg,
+    rgba(14,165,233,.08),
+    rgba(255,255,255,.8)
+    );
+  border: 1px solid rgba(14,165,233,.25);
+  color: #64748b;
+}

@@ -1,0 +1,5 @@
+src/pages/crm/contract/ContractAnalysisModal.tsx(11,7): error TS6133: 'STATUS_META' is declared but its value is never read.
+src/pages/crm/contract/ContractEditModal.tsx(150,19): error TS2339: Property 'uid' does not exist on type 'File'.
+src/pages/crm/contract/ContractEditModal.tsx(182,15): error TS2353: Object literal may only specify known properties, and 'paymentStatus' does not exist in type '{ customerId?: string | undefined; opportunityId?: string | undefined; name?: string | undefined; amount?: number | undefined; receivedAmount?: number | undefined; signDate?: { clone?: (() => Dayjs) | undefined; ... 32 more ...; to?: ((compared: string | ... 4 more ... | undefined, withoutSuffix?: boolean | undefine...'.
+src/pages/crm/contract/ContractManage.tsx(48,7): error TS6133: 'EXPIRING_OPTIONS' is declared but its value is never read.
+src/pages/crm/contract/ContractManage.tsx(296,35): error TS6133: 'r' is declared but its value is never read.

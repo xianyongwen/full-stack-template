@@ -1,0 +1,86 @@
+/* Tailwind v4：选择性导入，跳过 preflight 以避免与 antd 基础样式互相覆盖 */
+/* antd reset 与组件样式均归入低优先级层，确保 Tailwind 的 theme/base/utilities 可覆盖 */
+@layer antd-reset, antd, theme, base, components, utilities;
+@import 'antd/dist/reset.css' layer(antd-reset);
+@import 'tailwindcss/theme' layer(theme);
+@import 'tailwindcss/utilities' layer(utilities);
+
+/* ── 全局 CSS 变量（CSS Custom Properties） ── */
+:root {
+  /* ── 颜色 ── */
+  --color-white: #fff;
+  --color-bg: #f0f2f5; /* antd 默认页面背景 */
+
+  --color-text-primary: #323947;
+  --color-text-secondary: #666;
+  --color-text-disabled: rgba(0, 0, 0, 0.25);
+
+  /* ── 间距 ── */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 24px;
+
+  /* ── 圆角 ── */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+
+  /* ── 阴影 ── */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  /* ── 字体 ── */
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+
+  /* ── 动画 ── */
+  --transition-duration: 0.2s;
+
+  /* ── 容器背景 ── */
+  --container-bg: rgba(255, 255, 255, 0.7);
+  --menu-panel-bg: #f3f0ff;
+
+  /* ── 滚动条样式 ── */
+  --theme-scrollbar-thumb: rgba(106, 132, 255, 0.3);
+}
+
+/* ── 基础 reset / 全局元素样式（归入 base 层，可被 utilities 覆盖） ── */
+@layer base {
+  html,
+  body,
+  #root {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+
+  /* SVG 图标：跟随 font-size 缩放，颜色继承 currentColor */
+  .svg-icon {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+  }
+  .svg-icon svg {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    fill: currentColor;
+  }
+}
+
+/* ── 隐藏滚动条（保留可滚动） ── */
+@layer utilities {
+  .scrollbar-hidden {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE10+ */
+  }
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none; /* Chrome / Safari / Edge */
+  }
+}
