@@ -13,24 +13,14 @@ export function MyTable<T extends object>({
   size = 'large',
   className,
   scroll = { y: '200px' },
-  styles,
   ...rest
 }: TableProps<T>) {
   return (
     <Table<T>
       rowKey={rowKey}
       size={size}
-      className={cname('auto-height-table', className)}
+      className={cname('auto-height-table', 'gradient-table', className)}
       scroll={scroll}
-      styles={{
-        header: {
-          wrapper: {
-            background:
-              'linear-gradient(90deg, #5F55F6 0%, #6C5AF8 45%, #866CFF 100%)',
-          },
-        },
-        ...styles,
-      }}
       {...rest}
     />
   )

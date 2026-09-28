@@ -181,6 +181,48 @@
     }
   }
 
+  .gradient-table {
+    --table-header-gradient: linear-gradient(
+      90deg,
+      #5f55f6 0%,
+      #6c5af8 45%,
+      #866cff 100%
+    );
+
+    .ant-table-header {
+      container-type: inline-size;
+      background-image: var(--table-header-gradient);
+      background-size: 100% 100%;
+      /* 圆角原本由内层 table 元素裁切（tableRadius = borderRadiusLG），
+         渐变上移到 header 后需自带同样的上圆角 */
+      border-start-start-radius: var(--ant-border-radius-lg, 8px);
+      border-start-end-radius: var(--ant-border-radius-lg, 8px);
+    }
+
+    .ant-table-thead > tr > th.ant-table-cell-fix-start {
+      background-color: #5f55f6;
+    }
+    .ant-table-thead > tr > th.ant-table-cell-fix-end {
+      background-color: #866cff;
+    }
+
+    @supports (width: 1cqw) {
+      .ant-table-thead > tr > th.ant-table-cell-fix-start,
+      .ant-table-thead > tr > th.ant-table-cell-fix-end {
+        background-color: transparent;
+        background-image: var(--table-header-gradient);
+        background-size: 100cqw 100%;
+        background-repeat: no-repeat;
+      }
+      .ant-table-thead > tr > th.ant-table-cell-fix-start {
+        background-position: left top;
+      }
+      .ant-table-thead > tr > th.ant-table-cell-fix-end {
+        background-position: right top;
+      }
+    }
+  }
+
   /* ── flex 列布局的 Tabs：tab 栏固定、内容区占满剩余高度并溢出滚动 ──
      用于 page-table-container 内的多层卡片等内容，避免被 Container 的 overflow: hidden 裁掉 */
   .flex-tabs {
